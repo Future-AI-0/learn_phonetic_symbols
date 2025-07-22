@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>音标发音练习</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    h1 {
+      text-align: center;
+    }
+    h2 {
+      text-align:center;
+      margin-top: 40px;
+      color: #333;
+    }
+    h3 {
+      text-align:center;
+    }
+    p {
+      text-align: center;
+      margin: -20px auto 20px;
+      max-width: 600px;
+      color: #555;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 10px;
+      max-width: 800px;
+      margin: 0 auto 30px;
+    }
+    .phoneme {
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      padding: 10px;
+      text-align: center;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    }
+    .phoneme:hover {
+      background-color: #e0f7fa;
+    }
+    .phoneme span {
+      display: block;
+      font-size: 12px;
+      color: #555;
+      margin-top: 4px;
+    }
+  </style>
+</head>
+<body>
+  <h1>音标发音练习</h1>
+
+  <h2>单元音</h2>
+
+  <h3>长元音</h3>
+  <p>发音时间较长，如 /i:/（see /siː/ 中的 "ee"）。</p>
+  <div class="grid" id="grid-long-vowels"></div>
+
+  <h3>短元音</h3>
+  <p>发音短促，如 /ɪ/（sit /sɪt/ 中的 "i"）。</p>
+  <div class="grid" id="grid-short-vowels"></div>
+
+  <h2>双元音</h2>
+  <p>由两个元音滑动形成，如 /aɪ/（my /maɪ/ 中的 "y"）。</p>
+  <div class="grid" id="grid-diphthongs"></div>
+
+  <h2>清辅音</h2>
+  <p>声带不振动，如 /p/（pen /pen/ 中的 "p"）。</p>
+  <div class="grid" id="grid-voiceless"></div>
+
+  <h2>浊辅音</h2>
+  <p>声带振动，如 /b/（bad /bæd/ 中的 "b"）。</p>
+  <div class="grid" id="grid-voiced"></div>
+
+  <h2>其他辅音</h2>
+  <p>包括鼻音、边音、近音等，如 /m/（man /mæn/）。</p>
+  <div class="grid" id="grid-others"></div>
+
+  <div style="text-align:center; margin: 30px;">
+  <label for="category-select">选择播放分类：</label>
+  <select id="category-select" style="font-size: 16px; padding: 5px 10px;">
+    <option value="all">全部</option>
+    <option value="grid-long-vowels">长元音</option>
+    <option value="grid-short-vowels">短元音</option>
+    <option value="grid-diphthongs">双元音</option>
+    <option value="grid-voiceless">清辅音</option>
+    <option value="grid-voiced">浊辅音</option>
+    <option value="grid-others">其他辅音</option>
+  </select>
+
+  <button id="toggle-play" style="padding: 10px 20px; font-size: 16px; margin-left: 15px;">▶️ 开始循环播放</button>
+  </div>
+
+
+  <script>
+    const examples = {
+      "/i:/": "see /siː/",
+      "/ɑ:/": "car /kɑː/",
+      "/ɔ:/": "saw /sɔː/",
+      "/u:/": "blue /bluː/",
+      "/ɜ:/": "bird /bɜːd/",
+
+      "/ɪ/": "sit /sɪt/",
+      "/e/": "bed /bed/",
+      "/æ/": "cat /kæt/",
+      "/ʌ/": "cup /kʌp/",
+      "/ɒ/": "dog /dɒg/",
+      "/ʊ/": "put /pʊt/",
+      "/ə/": "ago /əˈgəʊ/",
+
+      "/eɪ/": "say /seɪ/",
+      "/aɪ/": "my /maɪ/",
+      "/ɔɪ/": "boy /bɔɪ/",
+      "/aʊ/": "how /haʊ/",
+      "/əʊ/": "go /gəʊ/",
+      "/ɪə/": "ear /ɪə/",
+      "/eə/": "hair /heə/",
+      "/ʊə/": "tour /tʊə/",
+
+      "/p/": "pen /pen/",
+      "/t/": "top /tɒp/",
+      "/k/": "cat /kæt/",
+      "/f/": "fish /fɪʃ/",
+      "/s/": "sun /sʌn/",
+      "/ʃ/": "ship /ʃɪp/",
+      "/θ/": "think /θɪŋk/",
+      "/tʃ/": "cheese /tʃiːz/",
+      "/h/": "hat /hæt/",
+
+      "/b/": "bad /bæd/",
+      "/d/": "dog /dɒg/",
+      "/g/": "go /gəʊ/",
+      "/v/": "voice /vɔɪs/",
+      "/z/": "zoo /zuː/",
+      "/ʒ/": "measure /ˈmeʒə/",
+      "/ð/": "this /ðɪs/",
+      "/dʒ/": "jump /dʒʌmp/",
+
+      "/m/": "man /mæn/",
+      "/n/": "no /nəʊ/",
+      "/ŋ/": "sing /sɪŋ/",
+      "/l/": "leg /leg/",
+      "/r/": "red /red/",
+      "/j/": "yes /jes/",
+      "/w/": "water /ˈwɔːtə/"
+    };
+
+    const categories = {
+      'grid-long-vowels': ["/i:/", "/ɑ:/", "/ɔ:/", "/u:/", "/ɜ:/"],
+      'grid-short-vowels': ["/ɪ/", "/e/", "/æ/", "/ʌ/", "/ɒ/", "/ʊ/", "/ə/"],
+      'grid-diphthongs': ["/eɪ/", "/aɪ/", "/ɔɪ/", "/aʊ/", "/əʊ/", "/ɪə/", "/eə/", "/ʊə/"],
+      'grid-voiceless': ["/p/", "/t/", "/k/", "/f/", "/s/", "/ʃ/", "/θ/", "/tʃ/", "/h/"],
+      'grid-voiced': ["/b/", "/d/", "/g/", "/v/", "/z/", "/ʒ/", "/ð/", "/dʒ/"],
+      'grid-others': ["/m/", "/n/", "/ŋ/", "/l/", "/r/", "/j/", "/w/"]
+    };
+
+    // 创建每个音标按钮
+    for (const [gridId, phonemes] of Object.entries(categories)) {
+      const grid = document.getElementById(gridId);
+      phonemes.forEach(p => {
+        const btn = document.createElement('div');
+        btn.className = 'phoneme';
+        btn.innerHTML = `${p}<span>${examples[p] || ''}</span>`;
+        btn.onclick = () => {
+          const audio = new Audio(`audio/${p.replace(/[:/]/g, '_')}.mp3`);
+          audio.play();
+        };
+        grid.appendChild(btn);
+      });
+    }
+
+    // 循环播放逻辑
+    let isPlaying = false;
+    let playList = [];
+    let currentIndex = 0;
+    let audioObj = null;
+
+    // 生成播放列表（可限制分类）
+    function generatePlayList(selectedCategory) {
+      playList = [];
+
+      const targets = selectedCategory === 'all'
+        ? Object.entries(categories)
+        : [[selectedCategory, categories[selectedCategory]]];
+
+      for (const [gridId, phonemes] of targets) {
+        const grid = document.getElementById(gridId);
+        phonemes.forEach(p => {
+          const safeName = p.replace(/[:/]/g, '_');
+          const element = [...grid.children].find(el => el.innerText.startsWith(p));
+          playList.push({ p, safeName, element });
+        });
+      }
+    }
+
+    // 播放下一个音标
+    function playNext() {
+      if (!isPlaying || playList.length === 0) return;
+
+      const { p, safeName, element } = playList[currentIndex];
+
+      // 清除所有高亮
+      playList.forEach(({ element }) => {
+        element.style.backgroundColor = "white";
+      });
+
+      // 高亮当前
+      element.style.backgroundColor = "#a2e3f5";
+
+      // 播放
+      audioObj = new Audio(`audio/${safeName}.mp3`);
+      audioObj.play();
+
+      audioObj.onended = () => {
+        currentIndex = (currentIndex + 1) % playList.length;
+
+        const delay = 1400 + Math.random() * 1000; // 2000ms~3000ms 随机间隔
+        setTimeout(playNext, delay);
+      };
+    }
+
+    //播放/停止按钮绑定
+    document.getElementById("toggle-play").onclick = () => {
+      isPlaying = !isPlaying;
+      const btn = document.getElementById("toggle-play");
+      const selected = document.getElementById("category-select").value;
+
+      btn.textContent = isPlaying ? "⏹️ 停止播放" : "▶️ 开始循环播放";
+
+      if (isPlaying) {
+        generatePlayList(selected);
+        currentIndex = 0;
+        playNext();
+      } else {
+        if (audioObj) audioObj.pause();
+        playList.forEach(({ element }) => {
+          element.style.backgroundColor = "white";
+        });
+      }
+    };
+  </script>
+
+</body>
+</html>
