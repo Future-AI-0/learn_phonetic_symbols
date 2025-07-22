@@ -34,9 +34,6 @@ Phoneme	File Name
 🚀 How to Use
 Clone the repository or download the files manually:
 
-bash
-复制
-编辑
 git clone https://github.com/your-username/your-repo-name.git
 cd your-repo-name
 Add your .mp3 audio files to the audio/ folder (make sure they follow the naming convention).
