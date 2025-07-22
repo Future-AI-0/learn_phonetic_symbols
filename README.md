@@ -23,7 +23,7 @@ Responsive design for both mobile and desktop
 └── README.md              # This documentation
 🔊 Audio File Naming Convention
 Phonemes like /i:/ should be converted to filenames like i_.mp3.
-Naming rule: replace / with _, remove :.
+Naming rule: replace / : with _.
 
 Examples:
 
