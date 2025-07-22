@@ -30,9 +30,9 @@ Naming rule: replace / : with _.
 Examples:
 
 Phoneme	File Name
-/i:/	i_.mp3
-/tʃ/	tʃ_.mp3
-/əʊ/	əʊ_.mp3
+/i:/	_i__.mp3
+/tʃ/	_tʃ_.mp3
+/əʊ/	_əʊ_.mp3
 
 📌 All audio files should be placed inside the audio/ folder.
 
