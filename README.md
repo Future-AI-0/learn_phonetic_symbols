@@ -15,8 +15,11 @@ Responsive design for both mobile and desktop
 📁 Project Structure
 
 📦 Project Root
+
 ├── index.html             # Main interface (the HTML file you created)
+
 ├── audio/                 # Folder containing audio files (e.g. i_.mp3)
+
 └── README.md              # This documentation
 🔊 Audio File Naming Convention
 Phonemes like /i:/ should be converted to filenames like i_.mp3.
